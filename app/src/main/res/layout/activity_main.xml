@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/activity_main"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="qianfeng.a7_3coordinatorlayout.MainActivity">
+
+    <!--
+       CoordinatorLayout整体上分为两大块：
+       1.头部可折叠区域（AppBarLayout）
+       2.底部的滑动区域 （NestedScrollView/RecyclerView）
+       -->
+
+  <android.support.design.widget.AppBarLayout
+      android:layout_width="match_parent"
+      android:id="@+id/appbarlayout"
+      android:layout_height="180dp">
+
+      <!--
+      app:layout_scrollFlags="scroll" 设置头部的折叠模式
+      scroll 当底部开始滚动时，头部也跟着滚动
+      enterAlways 一旦底部的控件向下滚动，头部就显示出来
+      enterAlwaysCollapsed 底部的滑动控件见顶的时候，头部显示出来(内容滑动完成，才会显示出来)
+      exitUntilCollapsed 当头部折叠到最小高度（Toolbar的高度）时就不再折叠 (ImageView退出用户视线时)
+      snap 头部在折叠的过程中会就近停靠
+
+       app:contentScrim="@color/colorPrimary" 头部折叠完后，Toolbar所显示的颜色
+
+       app:layout_collapseMode="parallax" 设置头布局的折叠模式
+        parallax 表示折叠的过程中上下边同时折叠
+        app:layout_collapseParallaxMultiplier="" 折叠的视觉乘数 ，取值范围为[0-1]
+        0表示顶部折叠，底部不折叠
+        1表示底部折叠，顶部不折叠(越靠近1，底部收缩越快)
+
+       app:layout_collapseMode="pin" 折叠完成后停靠在头部的控件, 其实默认就是这个
+
+        app:title="Hello" 设置头布局上的文本，该文本会覆盖掉Toolbar的title属性(覆盖掉原有的Toolbar的名称)
+        app:expandedTitleGravity="right|bottom" 设置头布局展开后文本的位置(标题一开始显示的地方)
+        app:collapsedTitleGravity="right" 设置头布局折叠后文本的位置(标题最终会收缩到的地方)
+
+      -->
+      <android.support.design.widget.CollapsingToolbarLayout
+          android:layout_width="match_parent"
+          app:contentScrim="@color/colorPrimary"
+          app:title="Hello"
+          app:expandedTitleGravity="right|bottom"
+          app:collapsedTitleGravity="right"
+          app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed|snap"
+          android:layout_height="match_parent">
+
+          <ImageView
+              android:src="@drawable/a5"
+              app:layout_collapseMode="parallax"
+              app:layout_collapseParallaxMultiplier="0.7"
+              android:scaleType="centerCrop"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+
+
+          <android.support.v7.widget.Toolbar
+              android:id="@+id/toolbar"
+              android:layout_width="match_parent"
+              app:layout_collapseMode="pin"
+              android:layout_height="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+
+      </android.support.design.widget.CollapsingToolbarLayout>
+
+  </android.support.design.widget.AppBarLayout>
+
+    <!--
+     app:layout_behavior="@string/appbar_scrolling_view_behavior" 协调textView的文本是在ImageView视图之后才显示，而不是默认显示在屏幕的左上角开始
+    -->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!-- 这两个属性在其他地方是没有效果的啊，因为在其他布局中，你可以直接把它当成一个普通控件一样摆放
+   app:layout_anchor="" 表示控件停靠的参考物
+   app:layout_anchorGravity="" 设置控件停靠位置（相对于参考物），只在CoordinatorLayout中有效!!!
+   -->
+
+    <!--
+    这个fabSize是解决FloatingActionButton里面设置的图片自动缩放的问题，如果你给FloatingActionButton在layout_width中指定具体的值，里面的图片也会进行缩放！
+    app:fabSize="mini" 这个可以点击FloatingActionButton，再查看onMeasure方法，找到里面的case：MINI:看里面设置的尺寸大小来源于哪个名称，只需在本工程中重新给该名称的值再赋一次即可。
+    app:elevation="15dp" 这个毫无疑问了，阴影的效果-海拔高度。
+    android:src: 如何调用sdk中自带的图片?     android:src="@android:drawable/ic_input_add"
+    -->
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        app:layout_anchor="@id/appbarlayout"
+        app:layout_anchorGravity="right|bottom"
+        app:elevation="15dp"
+        app:fabSize="normal"
+        android:src="@drawable/a5"
+        android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>
+
